@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do List</title>
+    <script
+      src="https://kit.fontawesome.com/7d8919f8b4.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- 전체 박스 -->
+    <section class="todo__wrapper">
+      <!-- 타이틀 -->
+      <header class="todo__title">DO IT🐱‍💻</header>
+
+      <!-- 입력창 -->
+      <div class="todo__box">
+        <div class="todo__box-input">
+          <input
+            type="text"
+            class="todo__input"
+            placeholder="할 일을 입력하세요."
+          />
+          <button class="todo__add">
+            <i class="fa-regular fa-square-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 할일 목록 -->
+      <ul class="todo__list"></ul>
+
+      <!-- 남은 갯수 / 전체 완료 / 전체 삭제 -->
+      <footer class="todo__control">
+        <div class="todo__left">오늘 할 일: 0개</div>
+        <div class="todo__left-d">남은 할 일: 0개</div>
+        <div class="todo__left-btns">
+          <button class="todo__all">
+            <i class="fa-solid fa-list-check"></i>
+          </button>
+          <button class="todo__clear">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </footer>
+      <p class="info">더블클릭 시 수정 가능!</p>
+    </section>
+  </body>
+</html>
