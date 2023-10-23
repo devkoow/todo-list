@@ -1,16 +1,16 @@
-const inputBox = document.querySelector('.todo__input'); // 인풋
-const add = document.querySelector('.todo__add'); // 추가 버튼
-const ul = document.querySelector('.todo__list'); // 할일 리스트
-const item = document.querySelector('.todo__item'); // 할일
-const done = document.querySelector('.todo__done'); // 완료 버튼
-const itemText = document.querySelector('.todo__item-text'); // 할일 텍스트
-const del = document.querySelector('.todo__delete'); // X 버튼
-const todoLeft = document.querySelector('.todo__left'); // 오늘 할 일
-const todoLeftd = document.querySelector('.todo__left-d'); // 남은 할 일
-const doneAll = document.querySelector('.todo__all'); // 전체 완료 버튼
-const clear = document.querySelector('.todo__clear'); // 전체 삭제 버튼
+const inputBox = document.querySelector('.todo__input');
+const add = document.querySelector('.todo__add');
+const ul = document.querySelector('.todo__list');
+const item = document.querySelector('.todo__item');
+const done = document.querySelector('.todo__done');
+const itemText = document.querySelector('.todo__item-text');
+const del = document.querySelector('.todo__delete');
+const todoToday = document.querySelector('.todo__today');
+const todoLeft = document.querySelector('.todo__left');
+const doneAll = document.querySelector('.todo__all');
+const clear = document.querySelector('.todo__clear');
 
-// 아이템을 만드는 함수
+// 아이템 만들기
 function createItem(txt) {
   const item = document.createElement('li');
   item.setAttribute('class', 'todo__item');
@@ -46,10 +46,49 @@ function createItem(txt) {
   item.appendChild(deleteBtn);
   ul.appendChild(item);
   item.scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+  // 더블클릭 수정
+  const items = document.querySelectorAll('.todo__item');
+  items.forEach((item) => {
+    item.addEventListener('dblclick', () => {
+      const itemText = item.querySelector('.todo__item-text');
+
+      const editInput = document.createElement('input');
+      editInput.setAttribute('type', 'text');
+      editInput.setAttribute('class', 'todo__edit-input');
+      editInput.value = itemText.innerText;
+
+      item.insertBefore(editInput, item.querySelector('.todo__delete'));
+
+      editInput.focus();
+
+      items.forEach((itemElement) => {
+        const textElement = itemElement.querySelector('.todo__item-text');
+        if (itemElement !== item) {
+          textElement.style.display = 'inline-block';
+        } else {
+          textElement.style.display = 'none';
+        }
+      });
+
+      editInput.addEventListener('blur', () => {
+        itemText.innerText = editInput.value;
+        itemText.style.display = 'inline-block';
+
+        item.removeChild(editInput);
+      });
+
+      editInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          editInput.blur();
+        }
+      });
+    });
+  });
   return item;
 }
 
-// 아이템을 리스트에 추가하는 함수
+// 리스트에 아이템을 추가
 function onAdd() {
   const text = inputBox.value;
 
@@ -65,10 +104,8 @@ function onAdd() {
   leftCount();
 }
 
-// 할일 추가 이벤트
 add.addEventListener('click', () => {
   onAdd();
-  item.scrollIntoView({ block: 'center' });
 });
 
 inputBox.addEventListener('keydown', (event) => {
@@ -77,21 +114,22 @@ inputBox.addEventListener('keydown', (event) => {
   }
 });
 
-// 할일 갯수를 나타내는 함수
+// 오늘 할 일
 function count() {
   const count = ul.childElementCount;
-  todoLeft.innerHTML = `오늘 할 일: ${count}개`;
+  todoToday.innerHTML = `오늘 할 일: ${count}개`;
 }
 
+// 남은 할 일
 function leftCount() {
   const count = ul.childElementCount;
   const dones = document.querySelectorAll('.done');
   const countDone = dones.length;
   const num = count - countDone;
-  todoLeftd.innerHTML = `남은 할 일: ${num}개`;
+  todoLeft.innerHTML = `남은 할 일: ${num}개`;
 }
 
-// 전체 완료 이벤트
+// 전체 완료
 doneAll.addEventListener('click', () => {
   const allText = document.querySelectorAll('.todo__item-text');
   allText.forEach((text) => {
@@ -100,17 +138,9 @@ doneAll.addEventListener('click', () => {
   leftCount();
 });
 
-// 전체 삭제 함수 및 이벤트
-function clearItem() {
-  ul.innerHTML = '';
-}
-
+// 전체 삭제
 clear.addEventListener('click', () => {
-  clearItem();
+  ul.innerHTML = '';
   count();
   leftCount();
 });
-
-// 더블 클릭 시 내용을 수정하는 함수
-// 9월 9일에 완료하기
-editText.addEventListener('dbclick', () => {});
